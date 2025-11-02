@@ -1,0 +1,12 @@
+-- Seed file for local development
+-- This file is run after migrations when using Supabase local dev
+
+-- Example: Insert a test scan (requires a valid user_id from auth.users)
+-- insert into public.scans (user_id, url, violations, violations_count, status)
+-- values (
+--   'user-uuid-here',
+--   'https://example.com',
+--   '[]'::jsonb,
+--   0,
+--   'completed'
+-- );
