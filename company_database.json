@@ -1,0 +1,82 @@
+{
+  "companies": [
+    {
+      "id": 1,
+      "name": "Colker Janitorial Supplies",
+      "url": "https://www.colkerjanitorial.com/",
+      "type": "Regional supplier",
+      "location": "Pittsburgh, PA",
+      "services": ["Janitorial supplies", "Cleaning products"],
+      "market_segment": "Local/Regional"
+    },
+    {
+      "id": 2,
+      "name": "Fagan Sanitary Supply",
+      "url": "https://fagansupply.com/",
+      "type": "Local janitorial supplies",
+      "location": "West Elizabeth, PA",
+      "services": ["Janitorial supplies", "Sanitary products"],
+      "market_segment": "Local/Regional"
+    },
+    {
+      "id": 3,
+      "name": "Buckeye Cleaning Centers",
+      "url": "https://buckeyecleaningcenters.com/locations/PA/Monroeville/83",
+      "type": "Commercial cleaning & janitorial",
+      "location": "Monroeville, PA",
+      "services": ["Commercial cleaning", "Janitorial supplies", "Equipment"],
+      "market_segment": "Local/Regional"
+    },
+    {
+      "id": 4,
+      "name": "Cintas",
+      "url": "https://www.cintas.com/local/usa/pa/pittsburgh/janitorial-supplies-services",
+      "type": "National janitorial supplies & services",
+      "location": "Pittsburgh, PA (National presence)",
+      "services": ["Janitorial supplies", "Services", "Uniform services"],
+      "market_segment": "National distributor"
+    },
+    {
+      "id": 5,
+      "name": "ULINE",
+      "url": "https://www.uline.com/Cls_08/Janitorial-Supplies",
+      "type": "National distributor",
+      "location": "National",
+      "services": ["Janitorial supplies", "Shipping supplies", "Industrial products"],
+      "market_segment": "National distributor"
+    },
+    {
+      "id": 6,
+      "name": "Source Supply Company",
+      "url": "https://sourcesupplycompany.com/",
+      "type": "Wholesale janitorial supplies",
+      "location": "National",
+      "services": ["Wholesale cleaning supplies", "Bulk ordering", "Discount cleaning products"],
+      "market_segment": "Wholesale specialist"
+    },
+    {
+      "id": 7,
+      "name": "UnoClean",
+      "url": "https://www.unoclean.com/",
+      "type": "National supplier of facility cleaning equipment",
+      "location": "National",
+      "services": ["Facility cleaning equipment", "Cleaning supplies", "Floor care"],
+      "market_segment": "National distributor"
+    },
+    {
+      "id": 8,
+      "name": "The Ruskin Group",
+      "url": "https://www.ruskingroup.com/janitorial/",
+      "type": "Janitorial & cleaning supplies",
+      "location": "National",
+      "services": ["Mops", "Brooms", "Trash cans", "Cleaning supplies"],
+      "market_segment": "Specialty supplier"
+    }
+  ],
+  "metadata": {
+    "total_companies": 8,
+    "last_updated": "2025-11-01",
+    "search_keywords": "janitorial supplies companies",
+    "geographic_focus": "Pittsburgh, PA area and National"
+  }
+}
