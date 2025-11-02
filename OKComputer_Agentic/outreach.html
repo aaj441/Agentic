@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Outreach - AGENTIC-BROWSER WCAG PIPELINE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .bg-gradient-slate {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #f59e0b, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .contact-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #f59e0b;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #f59e0b;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-contacted {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-responded {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-scheduled {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-ignored {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .email-template {
+            border: 2px dashed #d1d5db;
+            transition: all 0.3s ease;
+        }
+        
+        .email-template:hover {
+            border-color: #f59e0b;
+            background-color: #fffbeb;
+        }
+        
+        .campaign-step {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .campaign-step::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0.5rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: #f59e0b;
+            border-radius: 50%;
+        }
+        
+        .campaign-step::after {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 1rem;
+            width: 2px;
+            height: calc(100% - 1rem);
+            background-color: #e5e7eb;
+        }
+        
+        .campaign-step:last-child::after {
+            display: none;
+        }
+        
+        .typing-indicator {
+            animation: typing 1.5s infinite;
+        }
+        
+        @keyframes typing {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-200 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-slate rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">A</span>
+                        </div>
+                        <span class="font-bold text-xl text-slate-800">AGENTIC-BROWSER</span>
+                    </div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="nav-link text-slate-600 hover:text-slate-900 font-medium">Dashboard</a>
+                        <a href="reports.html" class="nav-link text-slate-600 hover:text-slate-900 font-medium">Reports</a>
+                        <a href="#" class="nav-link text-slate-900 font-medium">Outreach</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span class="text-sm text-slate-600">Auto-Campaign Active</span>
+                    </div>
+                    <button class="bg-gradient-slate text-white px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                        New Campaign
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-8 bg-gradient-slate">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    CEO Outreach Automation
+                </h1>
+                <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+                    Automated contact discovery, personalized outreach, and meeting scheduling
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="contact-card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-3xl font-bold text-blue-500" id="total-contacts">0</div>
+                        <div class="text-2xl">👥</div>
+                    </div>
+                    <div class="text-sm text-slate-600">Total Contacts</div>
+                    <div class="text-xs text-blue-600 mt-1">↑ 12 this week</div>
+                </div>
+                
+                <div class="contact-card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-3xl font-bold text-green-500" id="emails-sent">0</div>
+                        <div class="text-2xl">📧</div>
+                    </div>
+                    <div class="text-sm text-slate-600">Emails Sent</div>
+                    <div class="text-xs text-green-600 mt-1">98% delivery rate</div>
+                </div>
+                
+                <div class="contact-card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-3xl font-bold text-amber-500" id="responses-received">0</div>
+                        <div class="text-2xl">💬</div>
+                    </div>
+                    <div class="text-sm text-slate-600">Responses</div>
+                    <div class="text-xs text-amber-600 mt-1">23% response rate</div>
+                </div>
+                
+                <div class="contact-card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-3xl font-bold text-purple-500" id="meetings-booked">0</div>
+                        <div class="text-2xl">📅</div>
+                    </div>
+                    <div class="text-sm text-slate-600">Meetings Booked</div>
+                    <div class="text-xs text-purple-600 mt-1">8 this month</div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Left Panel - Contact Management -->
+                <div class="lg:col-span-2">
+                    
+                    <!-- Contact Discovery -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-slate-800">Contact Discovery</h3>
+                            <button id="discover-contacts" class="bg-gradient-slate text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">
+                                Discover New Contacts
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div class="p-4 border border-gray-200 rounded-lg">
+                                <div class="text-sm text-slate-600 mb-2">Target Industry</div>
+                                <div class="font-medium text-slate-800">Pet Furniture</div>
+                            </div>
+                            <div class="p-4 border border-gray-200 rounded-lg">
+                                <div class="text-sm text-slate-600 mb-2">Geographic Focus</div>
+                                <div class="font-medium text-slate-800">United States</div>
+                            </div>
+                            <div class="p-4 border border-gray-200 rounded-lg">
+                                <div class="text-sm text-slate-600 mb-2">Company Size</div>
+                                <div class="font-medium text-slate-800">10-500 employees</div>
+                            </div>
+                            <div class="p-4 border border-gray-200 rounded-lg">
+                                <div class="text-sm text-slate-600 mb-2">Risk Threshold</div>
+                                <div class="font-medium text-slate-800">High & Critical</div>
+                            </div>
+                        </div>
+                        
+                        <div id="discovery-status" class="hidden">
+                            <div class="flex items-center space-x-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="typing-indicator w-2 h-2 bg-blue-500 rounded-full"></div>
+                                <span class="text-sm text-blue-700">AI is discovering new CEO contacts...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact List -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-slate-800">CEO Contacts</h3>
+                            <div class="flex items-center space-x-3">
+                                <input type="text" placeholder="Search contacts..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                                <button class="px-4 py-2 bg-amber-500 text-white rounded-lg text-sm font-medium">Filter</button>
+                            </div>
+                        </div>
+                        
+                        <div id="contacts-list" class="space-y-4">
+                            <!-- Contacts will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Panel - Campaign Management -->
+                <div class="lg:col-span-1">
+                    
+                    <!-- Campaign Builder -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-6">Campaign Builder</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Campaign Name</label>
+                                <input type="text" placeholder="e.g., High-Risk Pet Furniture CEOs" 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Email Template</label>
+                                <div class="space-y-2">
+                                    <div class="email-template p-3 rounded-lg cursor-pointer">
+                                        <div class="text-sm font-medium text-slate-800">ADA Compliance Alert</div>
+                                        <div class="text-xs text-slate-600 mt-1">Urgent legal risk notification</div>
+                                    </div>
+                                    <div class="email-template p-3 rounded-lg cursor-pointer">
+                                        <div class="text-sm font-medium text-slate-800">Accessibility Partnership</div>
+                                        <div class="text-xs text-slate-600 mt-1">Collaborative improvement approach</div>
+                                    </div>
+                                    <div class="email-template p-3 rounded-lg cursor-pointer">
+                                        <div class="text-sm font-medium text-slate-800">Free Audit Offer</div>
+                                        <div class="text-xs text-slate-600 mt-1">Value-first engagement</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Follow-up Sequence</label>
+                                <div class="space-y-3">
+                                    <div class="campaign-step">
+                                        <div class="text-sm font-medium text-slate-800">Initial Email</div>
+                                        <div class="text-xs text-slate-600">Day 0</div>
+                                    </div>
+                                    <div class="campaign-step">
+                                        <div class="text-sm font-medium text-slate-800">Follow-up #1</div>
+                                        <div class="text-xs text-slate-600">Day 3</div>
+                                    </div>
+                                    <div class="campaign-step">
+                                        <div class="text-sm font-medium text-slate-800">Value Email</div>
+                                        <div class="text-xs text-slate-600">Day 7</div>
+                                    </div>
+                                    <div class="campaign-step">
+                                        <div class="text-sm font-medium text-slate-800">Final Attempt</div>
+                                        <div class="text-xs text-slate-600">Day 14</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full bg-gradient-slate text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                                Launch Campaign
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Campaign Performance -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-6">Campaign Performance</h3>
+                        <div id="performance-chart" class="h-48"></div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-6">Recent Activity</h3>
+                        <div id="recent-activity" class="space-y-3">
+                            <!-- Activity items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Email Preview Modal -->
+    <div id="email-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-slate-800">Email Preview</h3>
+                    <button id="close-modal" class="text-slate-400 hover:text-slate-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div id="email-content">
+                    <!-- Email content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-slate-400">
+                    © 2024 AGENTIC-BROWSER WCAG PIPELINE. Built for zero-budget accessibility compliance automation.
+                </p>
+                <p class="text-sm text-slate-500 mt-2">
+                    This tool helps identify accessibility issues but does not guarantee legal compliance. Consult legal professionals for ADA compliance advice.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        class OutreachManager {
+            constructor() {
+                this.contacts = [];
+                this.campaigns = [];
+                this.activities = [];
+                this.stats = {
+                    totalContacts: 0,
+                    emailsSent: 0,
+                    responsesReceived: 0,
+                    meetingsBooked: 0
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.loadMockData();
+                this.setupEventListeners();
+                this.renderContacts();
+                this.renderRecentActivity();
+                this.initializeCharts();
+                this.animateStats();
+            }
+            
+            loadMockData() {
+                this.contacts = [
+                    {
+                        id: 1,
+                        name: 'Sarah Johnson',
+                        title: 'CEO',
+                        company: 'Pet Furniture Co',
+                        email: 'sarah@petfurniture.com',
+                        phone: '+1 (555) 123-4567',
+                        linkedin: 'linkedin.com/in/sarahjohnson',
+                        risk: 'High',
+                        status: 'contacted',
+                        lastContact: '2024-01-15',
+                        notes: 'Interested in compliance audit'
+                    },
+                    {
+                        id: 2,
+                        name: 'Michael Chen',
+                        title: 'Founder',
+                        company: 'Cozy Pet Beds',
+                        email: 'michael@cozypetbeds.com',
+                        phone: '+1 (555) 234-5678',
+                        linkedin: 'linkedin.com/in/michaelchen',
+                        risk: 'Medium',
+                        status: 'responded',
+                        lastContact: '2024-01-18',
+                        notes: 'Requested more information'
+                    },
+                    {
+                        id: 3,
+                        name: 'Emily Rodriguez',
+                        title: 'President',
+                        company: 'Luxury Pet Products',
+                        email: 'emily@luxurypet.com',
+                        phone: '+1 (555) 345-6789',
+                        linkedin: 'linkedin.com/in/emilyrodriguez',
+                        risk: 'High',
+                        status: 'scheduled',
+                        lastContact: '2024-01-20',
+                        notes: 'Meeting scheduled for next week'
+                    },
+                    {
+                        id: 4,
+                        name: 'David Wilson',
+                        title: 'CEO',
+                        company: 'Pet Supplies Plus',
+                        email: 'david@petsupplies.com',
+                        phone: '+1 (555) 456-7890',
+                        linkedin: 'linkedin.com/in/davidwilson',
+                        risk: 'Critical',
+                        status: 'ignored',
+                        lastContact: '2024-01-10',
+                        notes: 'No response after 3 attempts'
+                    },
+                    {
+                        id: 5,
+                        name: 'Lisa Thompson',
+                        title: 'Founder',
+                        company: 'Modern Pet Designs',
+                        email: 'lisa@modernpet.com',
+                        phone: '+1 (555) 567-8901',
+                        linkedin: 'linkedin.com/in/lisathompson',
+                        risk: 'Medium',
+                        status: 'contacted',
+                        lastContact: '2024-01-22',
+                        notes: 'Asked for pricing information'
+                    }
+                ];
+                
+                this.activities = [
+                    { type: 'email_sent', contact: 'Sarah Johnson', time: '2 hours ago', details: 'ADA Compliance Alert sent' },
+                    { type: 'response_received', contact: 'Michael Chen', time: '4 hours ago', details: 'Requested more information' },
+                    { type: 'meeting_scheduled', contact: 'Emily Rodriguez', time: '6 hours ago', details: 'Call scheduled for Monday' },
+                    { type: 'contact_discovered', contact: 'Lisa Thompson', time: '8 hours ago', details: 'New CEO found in pet industry' },
+                    { type: 'email_sent', contact: 'David Wilson', time: '1 day ago', details: 'Final follow-up sent' }
+                ];
+                
+                this.stats = {
+                    totalContacts: this.contacts.length,
+                    emailsSent: 47,
+                    responsesReceived: 11,
+                    meetingsBooked: 8
+                };
+            }
+            
+            setupEventListeners() {
+                document.getElementById('discover-contacts').addEventListener('click', () => {
+                    this.discoverContacts();
+                });
+                
+                document.getElementById('close-modal').addEventListener('click', () => {
+                    this.closeModal();
+                });
+                
+                // Email template selection
+                document.querySelectorAll('.email-template').forEach(template => {
+                    template.addEventListener('click', () => {
+                        document.querySelectorAll('.email-template').forEach(t => t.classList.remove('border-amber-500', 'bg-amber-50'));
+                        template.classList.add('border-amber-500', 'bg-amber-50');
+                    });
+                });
+            }
+            
+            discoverContacts() {
+                const statusDiv = document.getElementById('discovery-status');
+                statusDiv.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    // Simulate contact discovery
+                    const newContacts = [
+                        {
+                            id: this.contacts.length + 1,
+                            name: 'Jennifer Martinez',
+                            title: 'CEO',
+                            company: 'Premium Pet Solutions',
+                            email: 'jennifer@premiumpetsolutions.com',
+                            phone: '+1 (555) 678-9012',
+                            linkedin: 'linkedin.com/in/jennifermartinez',
+                            risk: 'High',
+                            status: 'new',
+                            lastContact: null,
+                            notes: 'Newly discovered contact'
+                        },
+                        {
+                            id: this.contacts.length + 2,
+                            name: 'Robert Kim',
+                            title: 'Founder',
+                            company: 'Pet Comfort Empire',
+                            email: 'robert@petcomfortempire.com',
+                            phone: '+1 (555) 789-0123',
+                            linkedin: 'linkedin.com/in/robertkim',
+                            risk: 'Critical',
+                            status: 'new',
+                            lastContact: null,
+                            notes: 'High-priority target'
+                        }
+                    ];
+                    
+                    this.contacts.push(...newContacts);
+                    this.stats.totalContacts = this.contacts.length;
+                    
+                    statusDiv.classList.add('hidden');
+                    this.renderContacts();
+                    this.animateStats();
+                    
+                    // Add discovery activity
+                    this.activities.unshift({
+                        type: 'contact_discovered',
+                        contact: 'Jennifer Martinez & Robert Kim',
+                        time: 'just now',
+                        details: '2 new CEO contacts discovered'
+                    });
+                    this.renderRecentActivity();
+                }, 3000);
+            }
+            
+            renderContacts() {
+                const container = document.getElementById('contacts-list');
+                container.innerHTML = this.contacts.map(contact => {
+                    const statusClass = `status-${contact.status}`;
+                    const riskColor = contact.risk === 'Critical' ? 'text-red-600' :
+                                     contact.risk === 'High' ? 'text-amber-600' :
+                                     'text-green-600';
+                    
+                    return `
+                        <div class="contact-card p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-start justify-between mb-3">
+                                <div>
+                                    <div class="font-medium text-slate-800">${contact.name}</div>
+                                    <div class="text-sm text-slate-600">${contact.title}</div>
+                                    <div class="text-sm text-slate-500">${contact.company}</div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="status-badge ${statusClass}">${contact.status.replace('_', ' ')}</span>
+                                    <span class="text-xs font-medium ${riskColor}">${contact.risk} Risk</span>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2 mb-3">
+                                <div class="flex items-center text-sm text-slate-600">
+                                    <span class="mr-2">📧</span>
+                                    <a href="mailto:${contact.email}" class="hover:text-blue-600">${contact.email}</a>
+                                </div>
+                                <div class="flex items-center text-sm text-slate-600">
+                                    <span class="mr-2">📱</span>
+                                    <a href="tel:${contact.phone}" class="hover:text-blue-600">${contact.phone}</a>
+                                </div>
+                                <div class="flex items-center text-sm text-slate-600">
+                                    <span class="mr-2">💼</span>
+                                    <a href="https://${contact.linkedin}" target="_blank" class="hover:text-blue-600">LinkedIn Profile</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs text-slate-500">
+                                    Last contact: ${contact.lastContact || 'Never'}
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="outreachManager.viewEmailPreview(${contact.id})" 
+                                            class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                        Preview Email
+                                    </button>
+                                    <button onclick="outreachManager.sendEmail(${contact.id})" 
+                                            class="bg-amber-500 text-white px-3 py-1 rounded text-sm font-medium hover:bg-amber-600">
+                                        Send Email
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            ${contact.notes ? `
+                                <div class="mt-3 p-2 bg-gray-50 rounded text-xs text-slate-600">
+                                    <strong>Notes:</strong> ${contact.notes}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            renderRecentActivity() {
+                const container = document.getElementById('recent-activity');
+                container.innerHTML = this.activities.map(activity => {
+                    const icon = this.getActivityIcon(activity.type);
+                    const timeColor = activity.time === 'just now' ? 'text-green-600' : 'text-slate-500';
+                    
+                    return `
+                        <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="text-lg">${icon}</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-slate-800">${activity.contact}</div>
+                                <div class="text-xs text-slate-600">${activity.details}</div>
+                                <div class="text-xs ${timeColor} mt-1">${activity.time}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            getActivityIcon(type) {
+                const icons = {
+                    'email_sent': '📧',
+                    'response_received': '💬',
+                    'meeting_scheduled': '📅',
+                    'contact_discovered': '🔍',
+                    'campaign_launched': '🚀'
+                };
+                return icons[type] || '📝';
+            }
+            
+            initializeCharts() {
+                const performanceChart = echarts.init(document.getElementById('performance-chart'));
+                performanceChart.setOption({
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Week 1', 'Week 2', 'Week 3', 'Week 4']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name: 'Emails Sent',
+                            type: 'bar',
+                            data: [12, 18, 15, 20],
+                            itemStyle: { color: '#3b82f6' }
+                        },
+                        {
+                            name: 'Responses',
+                            type: 'bar',
+                            data: [3, 5, 4, 6],
+                            itemStyle: { color: '#22c55e' }
+                        },
+                        {
+                            name: 'Meetings',
+                            type: 'bar',
+                            data: [1, 2, 2, 3],
+                            itemStyle: { color: '#f59e0b' }
+                        }
+                    ]
+                });
+            }
+            
+            animateStats() {
+                anime({
+                    targets: { contacts: 0, emails: 0, responses: 0, meetings: 0 },
+                    contacts: this.stats.totalContacts,
+                    emails: this.stats.emailsSent,
+                    responses: this.stats.responsesReceived,
+                    meetings: this.stats.meetingsBooked,
+                    duration: 2000,
+                    easing: 'easeOutQuart',
+                    update: function(anim) {
+                        document.getElementById('total-contacts').textContent = Math.round(anim.animatables[0].target.contacts);
+                        document.getElementById('emails-sent').textContent = Math.round(anim.animatables[0].target.emails);
+                        document.getElementById('responses-received').textContent = Math.round(anim.animatables[0].target.responses);
+                        document.getElementById('meetings-booked').textContent = Math.round(anim.animatables[0].target.meetings);
+                    }
+                });
+            }
+            
+            viewEmailPreview(contactId) {
+                const contact = this.contacts.find(c => c.id === contactId);
+                if (!contact) return;
+                
+                const emailContent = `
+                    <div class="space-y-4">
+                        <div class="border-b border-gray-200 pb-4">
+                            <div class="text-sm text-slate-600">To: ${contact.email}</div>
+                            <div class="text-sm text-slate-600">From: compliance@agentic-browser.com</div>
+                            <div class="text-sm text-slate-600">Subject: Critical ADA Compliance Risk - ${contact.company}</div>
+                        </div>
+                        
+                        <div class="prose prose-sm">
+                            <p>Dear ${contact.name},</p>
+                            
+                            <p>I hope this message finds you well. I'm reaching out because our automated accessibility scanning system has identified ${contact.company} as having critical ADA compliance violations that could pose significant legal risks.</p>
+                            
+                            <p><strong>Key Findings:</strong></p>
+                            <ul>
+                                <li>Missing alt text on product images</li>
+                                <li>Insufficient color contrast ratios</li>
+                                <li>Lack of keyboard navigation support</li>
+                                <li>Missing form labels</li>
+                            </ul>
+                            
+                            <p>Recent lawsuits in your industry have resulted in settlements ranging from $16,000 to $815,000. Companies like Seattle Public Schools and Manatee County, Florida have faced significant legal and financial consequences.</p>
+                            
+                            <p>We'd like to offer you a complimentary accessibility audit and consultation to help you understand and address these issues before they become legal problems.</p>
+                            
+                            <p>Would you be available for a brief 15-minute call this week to discuss your current accessibility compliance status?</p>
+                            
+                            <p>Best regards,<br>
+                            The AGENTIC-BROWSER Team</p>
+                            
+                            <p class="text-xs text-slate-500 mt-4">
+                                This email was generated by our AI-powered accessibility monitoring system. 
+                                If you prefer not to receive these alerts, please reply with "UNSUBSCRIBE".
+                            </p>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('email-content').innerHTML = emailContent;
+                document.getElementById('email-modal').classList.remove('hidden');
+            }
+            
+            closeModal() {
+                document.getElementById('email-modal').classList.add('hidden');
+            }
+            
+            sendEmail(contactId) {
+                const contact = this.contacts.find(c => c.id === contactId);
+                if (!contact) return;
+                
+                // Update contact status
+                contact.status = 'contacted';
+                contact.lastContact = new Date().toISOString().split('T')[0];
+                
+                // Update stats
+                this.stats.emailsSent++;
+                
+                // Add activity
+                this.activities.unshift({
+                    type: 'email_sent',
+                    contact: contact.name,
+                    time: 'just now',
+                    details: 'ADA Compliance Alert sent'
+                });
+                
+                // Re-render
+                this.renderContacts();
+                this.renderRecentActivity();
+                this.animateStats();
+                
+                // Show success message
+                alert(`Email sent successfully to ${contact.email}!`);
+            }
+        }
+        
+        // Initialize the outreach manager
+        let outreachManager;
+        document.addEventListener('DOMContentLoaded', () => {
+            outreachManager = new OutreachManager();
+        });
+    </script>
+</body>
+</html>

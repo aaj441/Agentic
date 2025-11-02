@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Reports - AGENTIC-BROWSER WCAG PIPELINE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .bg-gradient-slate {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #f59e0b, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .report-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .report-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #f59e0b;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #f59e0b;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .violation-severity-critical {
+            border-left: 4px solid #ef4444;
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.1), transparent);
+        }
+        
+        .violation-severity-high {
+            border-left: 4px solid #f59e0b;
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.1), transparent);
+        }
+        
+        .violation-severity-medium {
+            border-left: 4px solid #eab308;
+            background: linear-gradient(90deg, rgba(234, 179, 8, 0.1), transparent);
+        }
+        
+        .violation-severity-low {
+            border-left: 4px solid #22c55e;
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.1), transparent);
+        }
+        
+        .chart-container {
+            min-height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-200 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-slate rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">A</span>
+                        </div>
+                        <span class="font-bold text-xl text-slate-800">AGENTIC-BROWSER</span>
+                    </div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="nav-link text-slate-600 hover:text-slate-900 font-medium">Dashboard</a>
+                        <a href="#" class="nav-link text-slate-900 font-medium">Reports</a>
+                        <a href="outreach.html" class="nav-link text-slate-600 hover:text-slate-900 font-medium">Outreach</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-gradient-slate text-white px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                        Export PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-8 bg-gradient-slate">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Compliance Reports
+                </h1>
+                <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+                    Detailed accessibility analysis and legal risk assessment
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="py-6 bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-slate-700">Industry:</label>
+                    <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+                        <option>Pet Furniture</option>
+                        <option>CBD Products</option>
+                        <option>Finnish Companies</option>
+                        <option>All Industries</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-slate-700">Risk Level:</label>
+                    <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+                        <option>All Levels</option>
+                        <option>Critical</option>
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-slate-700">Date Range:</label>
+                    <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+                        <option>Last 24 Hours</option>
+                        <option>Last Week</option>
+                        <option>Last Month</option>
+                        <option>All Time</option>
+                    </select>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm font-medium text-slate-700">Compliance Level:</label>
+                    <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+                        <option>WCAG 2.1 AA</option>
+                        <option>WCAG 2.1 A</option>
+                        <option>WCAG 2.1 AAA</option>
+                        <option>Section 508</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Overview Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="report-card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-3xl font-bold text-red-500">127</div>
+                        <div class="text-2xl">⚠️</div>
+                    </div>
+                    <div class="text-sm text-slate-600">Critical Violations</div>
+                    <div class="text-xs text-red-600 mt-1">↑ 23% from last scan</div>
+                </div>
+                
+                <div class="report-card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-3xl font-bold text-amber-500">89</div>
+                        <div class="text-2xl">🔍</div>
+                    </div>
+                    <div class="text-sm text-slate-600">High Risk Sites</div>
+                    <div class="text-xs text-amber-600 mt-1">↑ 15% from last scan</div>
+                </div>
+                
+                <div class="report-card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-3xl font-bold text-blue-500">$2.4M</div>
+                        <div class="text-2xl">💰</div>
+                    </div>
+                    <div class="text-sm text-slate-600">Estimated Legal Exposure</div>
+                    <div class="text-xs text-blue-600 mt-1">Based on recent settlements</div>
+                </div>
+                
+                <div class="report-card bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-3xl font-bold text-green-500">34</div>
+                        <div class="text-2xl">✅</div>
+                    </div>
+                    <div class="text-sm text-slate-600">Sites Remediated</div>
+                    <div class="text-xs text-green-600 mt-1">↓ 8% from last month</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                
+                <!-- Violation Trends -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-6">Violation Trends (Last 30 Days)</h3>
+                    <div id="trends-chart" class="chart-container"></div>
+                </div>
+                
+                <!-- Severity Distribution -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-6">Severity Distribution</h3>
+                    <div id="severity-chart" class="chart-container"></div>
+                </div>
+                
+                <!-- WCAG Guidelines Breakdown -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-6">WCAG Guidelines Breakdown</h3>
+                    <div id="guidelines-chart" class="chart-container"></div>
+                </div>
+                
+                <!-- Legal Risk Assessment -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-6">Legal Risk Assessment</h3>
+                    <div id="risk-chart" class="chart-container"></div>
+                </div>
+            </div>
+
+            <!-- Detailed Violations Table -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-12">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-slate-800">Detailed Violations</h3>
+                    <div class="flex items-center space-x-4">
+                        <input type="text" placeholder="Search violations..." class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <button class="px-4 py-2 bg-gradient-slate text-white rounded-lg text-sm font-medium">Export CSV</button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4 font-medium text-slate-700">Site</th>
+                                <th class="text-left py-3 px-4 font-medium text-slate-700">Violation</th>
+                                <th class="text-left py-3 px-4 font-medium text-slate-700">WCAG Guideline</th>
+                                <th class="text-left py-3 px-4 font-medium text-slate-700">Severity</th>
+                                <th class="text-left py-3 px-4 font-medium text-slate-700">Legal Risk</th>
+                                <th class="text-left py-3 px-4 font-medium text-slate-700">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="violations-table">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Case Studies Carousel -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-12">
+                <h3 class="text-lg font-semibold text-slate-800 mb-6">Recent Lawsuit Settlements</h3>
+                <div class="splide" id="settlements-carousel">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <li class="splide__slide">
+                                <div class="p-6 border border-gray-200 rounded-lg">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="font-semibold text-slate-800">National Federation of the Blind v. Seattle Public Schools</h4>
+                                        <span class="text-sm text-slate-500">2014</span>
+                                    </div>
+                                    <div class="text-sm text-slate-600 mb-4">
+                                        Settlement: $665,000 - $815,000 for website remediation, legal fees, and staff training.
+                                    </div>
+                                    <div class="text-xs text-red-600 font-medium">
+                                        Precedent-setting case for website accessibility
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="splide__slide">
+                                <div class="p-6 border border-gray-200 rounded-lg">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="font-semibold text-slate-800">Price v. Manatee County, Florida</h4>
+                                        <span class="text-sm text-slate-500">2019</span>
+                                    </div>
+                                    <div class="text-sm text-slate-600 mb-4">
+                                        Settlement: $16,000 plus $1,500/day fine until compliance achieved within 14 months.
+                                    </div>
+                                    <div class="text-xs text-amber-600 font-medium">
+                                        County took website offline for months due to litigation fear
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="splide__slide">
+                                <div class="p-6 border border-gray-200 rounded-lg">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h4 class="font-semibold text-slate-800">Rizzi v. Morgan Stanley</h4>
+                                        <span class="text-sm text-slate-500">2020</span>
+                                    </div>
+                                    <div class="text-sm text-slate-600 mb-4">
+                                        Lawsuit filed for $9 million in damages for inaccessible website.
+                                    </div>
+                                    <div class="text-xs text-red-600 font-medium">
+                                        High-profile financial services accessibility case
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remediation Recommendations -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-slate-800 mb-6">Remediation Recommendations</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="p-4 border border-red-200 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                            <span class="font-medium text-red-800">Critical Priority</span>
+                        </div>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li>• Fix missing alt text on all images</li>
+                            <li>• Ensure keyboard navigation works</li>
+                            <li>• Add proper form labels</li>
+                            <li>• Implement focus indicators</li>
+                        </ul>
+                        <div class="mt-3 text-xs text-red-600 font-medium">Estimated Cost: $15,000 - $25,000</div>
+                    </div>
+                    
+                    <div class="p-4 border border-amber-200 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <div class="w-3 h-3 bg-amber-500 rounded-full mr-2"></div>
+                            <span class="font-medium text-amber-800">High Priority</span>
+                        </div>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li>• Improve color contrast ratios</li>
+                            <li>• Add video captions</li>
+                            <li>• Fix heading structure</li>
+                            <li>• Add skip links</li>
+                        </ul>
+                        <div class="mt-3 text-xs text-amber-600 font-medium">Estimated Cost: $8,000 - $12,000</div>
+                    </div>
+                    
+                    <div class="p-4 border border-green-200 rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                            <span class="font-medium text-green-800">Ongoing Maintenance</span>
+                        </div>
+                        <ul class="text-sm text-slate-600 space-y-2">
+                            <li>• Regular accessibility audits</li>
+                            <li>• Staff training programs</li>
+                            <li>• User testing with assistive tech</li>
+                            <li>• Documentation updates</li>
+                        </ul>
+                        <div class="mt-3 text-xs text-green-600 font-medium">Estimated Cost: $3,000/month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-slate-400">
+                    © 2024 AGENTIC-BROWSER WCAG PIPELINE. Built for zero-budget accessibility compliance automation.
+                </p>
+                <p class="text-sm text-slate-500 mt-2">
+                    This tool helps identify accessibility issues but does not guarantee legal compliance. Consult legal professionals for ADA compliance advice.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize charts and interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCharts();
+            initializeCarousel();
+            populateViolationsTable();
+            animateCards();
+        });
+        
+        function initializeCharts() {
+            // Trends Chart
+            const trendsChart = echarts.init(document.getElementById('trends-chart'));
+            trendsChart.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Day 1', 'Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: 'Critical',
+                        type: 'line',
+                        data: [12, 15, 18, 22, 25, 28, 32],
+                        itemStyle: { color: '#ef4444' }
+                    },
+                    {
+                        name: 'High',
+                        type: 'line',
+                        data: [8, 12, 15, 18, 20, 22, 25],
+                        itemStyle: { color: '#f59e0b' }
+                    },
+                    {
+                        name: 'Medium',
+                        type: 'line',
+                        data: [5, 8, 10, 12, 14, 16, 18],
+                        itemStyle: { color: '#eab308' }
+                    }
+                ]
+            });
+            
+            // Severity Chart
+            const severityChart = echarts.init(document.getElementById('severity-chart'));
+            severityChart.setOption({
+                tooltip: {
+                    trigger: 'item'
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        data: [
+                            { value: 127, name: 'Critical', itemStyle: { color: '#ef4444' } },
+                            { value: 89, name: 'High', itemStyle: { color: '#f59e0b' } },
+                            { value: 156, name: 'Medium', itemStyle: { color: '#eab308' } },
+                            { value: 203, name: 'Low', itemStyle: { color: '#22c55e' } }
+                        ]
+                    }
+                ]
+            });
+            
+            // Guidelines Chart
+            const guidelinesChart = echarts.init(document.getElementById('guidelines-chart'));
+            guidelinesChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Perceivable', 'Operable', 'Understandable', 'Robust']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: 'Violations',
+                        type: 'bar',
+                        data: [89, 67, 45, 23],
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#f59e0b' },
+                                { offset: 1, color: '#14b8a6' }
+                            ])
+                        }
+                    }
+                ]
+            });
+            
+            // Risk Chart
+            const riskChart = echarts.init(document.getElementById('risk-chart'));
+            riskChart.setOption({
+                tooltip: {
+                    trigger: 'item'
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        radius: '70%',
+                        data: [
+                            { value: 15, name: 'Lawsuit Risk', itemStyle: { color: '#ef4444' } },
+                            { value: 35, name: 'Settlement Risk', itemStyle: { color: '#f59e0b' } },
+                            { value: 50, name: 'Compliance OK', itemStyle: { color: '#22c55e' } }
+                        ]
+                    }
+                ]
+            });
+        }
+        
+        function initializeCarousel() {
+            new Splide('#settlements-carousel', {
+                type: 'loop',
+                perPage: 2,
+                perMove: 1,
+                gap: '1rem',
+                autoplay: true,
+                interval: 5000,
+                breakpoints: {
+                    768: {
+                        perPage: 1
+                    }
+                }
+            }).mount();
+        }
+        
+        function populateViolationsTable() {
+            const violations = [
+                { site: 'petfurniture.com', violation: 'Missing Alt Text', guideline: '1.1.1', severity: 'Critical', risk: 'High' },
+                { site: 'cozy-pet-beds.com', violation: 'Low Color Contrast', guideline: '1.4.3', severity: 'High', risk: 'Medium' },
+                { site: 'luxury-pet-products.com', violation: 'No Keyboard Navigation', guideline: '2.1.1', severity: 'Critical', risk: 'High' },
+                { site: 'pet-supplies-plus.com', violation: 'Missing Form Labels', guideline: '3.3.2', severity: 'High', risk: 'Medium' },
+                { site: 'happy-pet-store.com', violation: 'No Video Captions', guideline: '1.2.2', severity: 'Medium', risk: 'Low' },
+                { site: 'premium-pet-gear.com', violation: 'Empty Links', guideline: '2.4.4', severity: 'Medium', risk: 'Low' },
+                { site: 'pet-comfort-solutions.com', violation: 'Missing Language Tag', guideline: '3.1.1', severity: 'Low', risk: 'Low' },
+                { site: 'best-pet-products.com', violation: 'No Focus Indicators', guideline: '2.4.7', severity: 'High', risk: 'Medium' }
+            ];
+            
+            const tbody = document.getElementById('violations-table');
+            tbody.innerHTML = violations.map(violation => {
+                const severityClass = `violation-severity-${violation.severity.toLowerCase()}`;
+                const riskColor = violation.risk === 'High' ? 'text-red-600' : 
+                                 violation.risk === 'Medium' ? 'text-amber-600' : 'text-green-600';
+                
+                return `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="py-3 px-4">
+                            <div class="font-medium text-slate-800">${violation.site}</div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <div class="text-sm text-slate-600">${violation.violation}</div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <div class="text-sm text-slate-600">WCAG ${violation.guideline}</div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <div class="text-sm font-medium ${severityClass} px-2 py-1 rounded">${violation.severity}</div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <div class="text-sm font-medium ${riskColor}">${violation.risk}</div>
+                        </td>
+                        <td class="py-3 px-4">
+                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Fix Now</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function animateCards() {
+            anime({
+                targets: '.report-card',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                delay: anime.stagger(100),
+                duration: 600,
+                easing: 'easeOutQuart'
+            });
+        }
+    </script>
+</body>
+</html>

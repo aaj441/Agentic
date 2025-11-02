@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGENTIC-BROWSER WCAG PIPELINE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <link href="https://unpkg.com/splitting@1.0.6/dist/splitting.css" rel="stylesheet">
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .bg-gradient-slate {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #f59e0b, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .scanning-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .violation-card {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .violation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #14b8a6, #f59e0b);
+            height: 4px;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #f59e0b;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #f59e0b;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+    <canvas id="particles-canvas"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-200 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-slate rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">A</span>
+                        </div>
+                        <span class="font-bold text-xl text-slate-800">AGENTIC-BROWSER</span>
+                    </div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="#" class="nav-link text-slate-600 hover:text-slate-900 font-medium">Dashboard</a>
+                        <a href="reports.html" class="nav-link text-slate-600 hover:text-slate-900 font-medium">Reports</a>
+                        <a href="outreach.html" class="nav-link text-slate-600 hover:text-slate-900 font-medium">Outreach</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full scanning-pulse"></div>
+                        <span class="text-sm text-slate-600">Live Scanning</span>
+                    </div>
+                    <button class="bg-gradient-slate text-white px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                        Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-12 bg-gradient-slate">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    <span id="typed-text"></span>
+                </h1>
+                <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+                    Zero-Budget, Zero-Touch, 100-Site, 48h-Ship WCAG Compliance Pipeline
+                </p>
+            </div>
+            
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                <div class="metric-card rounded-xl p-6 text-center">
+                    <div class="text-3xl font-bold text-gradient mb-2" id="sites-scanned">0</div>
+                    <div class="text-sm text-slate-600">Sites Scanned</div>
+                </div>
+                <div class="metric-card rounded-xl p-6 text-center">
+                    <div class="text-3xl font-bold text-red-500 mb-2" id="violations-found">0</div>
+                    <div class="text-sm text-slate-600">Violations Found</div>
+                </div>
+                <div class="metric-card rounded-xl p-6 text-center">
+                    <div class="text-3xl font-bold text-amber-500 mb-2" id="high-risk">0</div>
+                    <div class="text-sm text-slate-600">High Risk</div>
+                </div>
+                <div class="metric-card rounded-xl p-6 text-center">
+                    <div class="text-3xl font-bold text-green-500 mb-2" id="ceos-contacted">0</div>
+                    <div class="text-sm text-slate-600">CEOs Contacted</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Dashboard -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Left Panel - Scan Configuration -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Scan Configuration</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Industry Keyword</label>
+                                <input type="text" id="keyword-input" placeholder="e.g., pet furniture, CBD gummies" 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Scan Depth</label>
+                                <select id="scan-depth" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                                    <option value="quick">Quick (50 sites)</option>
+                                    <option value="standard" selected>Standard (100 sites)</option>
+                                    <option value="deep">Deep (200 sites)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Compliance Level</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="rounded border-gray-300 text-amber-500 focus:ring-amber-500">
+                                        <span class="ml-2 text-sm text-slate-700">WCAG 2.1 A</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" checked class="rounded border-gray-300 text-amber-500 focus:ring-amber-500">
+                                        <span class="ml-2 text-sm text-slate-700">WCAG 2.1 AA</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="rounded border-gray-300 text-amber-500 focus:ring-amber-500">
+                                        <span class="ml-2 text-sm text-slate-700">WCAG 2.1 AAA</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button id="start-scan" class="w-full bg-gradient-slate text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                                Start Scanning
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button class="w-full text-left px-4 py-3 bg-amber-50 text-amber-700 rounded-lg hover:bg-amber-100 transition-colors">
+                                📧 Send Outreach Campaign
+                            </button>
+                            <button class="w-full text-left px-4 py-3 bg-teal-50 text-teal-700 rounded-lg hover:bg-teal-100 transition-colors">
+                                📊 Generate Report
+                            </button>
+                            <button class="w-full text-left px-4 py-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors">
+                                ⚖️ Legal Risk Assessment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Center Panel - Live Scanning -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-slate-800">Live Scanning Progress</h3>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full scanning-pulse"></div>
+                                <span class="text-sm text-slate-600">Active</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm text-slate-600 mb-2">
+                                <span>Scanning Progress</span>
+                                <span id="progress-percent">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div id="progress-bar" class="progress-bar w-0 h-2 rounded-full"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Current Target -->
+                        <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                            <div class="text-sm text-slate-600 mb-1">Currently Scanning</div>
+                            <div id="current-site" class="font-mono text-sm text-slate-800">https://example-pet-store.com</div>
+                        </div>
+                        
+                        <!-- Violation Heatmap -->
+                        <div class="mb-6">
+                            <h4 class="text-sm font-medium text-slate-700 mb-3">Violation Severity Distribution</h4>
+                            <div id="violation-chart" class="h-48"></div>
+                        </div>
+                        
+                        <!-- Scan Queue -->
+                        <div>
+                            <h4 class="text-sm font-medium text-slate-700 mb-3">Scan Queue</h4>
+                            <div id="scan-queue" class="space-y-2 max-h-32 overflow-y-auto">
+                                <!-- Queue items will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Panel - Alerts & Notifications -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Critical Alerts</h3>
+                        <div id="alerts-container" class="space-y-3">
+                            <!-- Alerts will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- High Risk Sites -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">High Risk Sites</h3>
+                        <div id="high-risk-sites" class="space-y-3">
+                            <!-- High risk sites will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Violations -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Recent Violations</h3>
+                        <div id="recent-violations" class="space-y-3">
+                            <!-- Recent violations will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-slate-400">
+                    © 2024 AGENTIC-BROWSER WCAG PIPELINE. Built for zero-budget accessibility compliance automation.
+                </p>
+                <p class="text-sm text-slate-500 mt-2">
+                    This tool helps identify accessibility issues but does not guarantee legal compliance. Consult legal professionals for ADA compliance advice.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

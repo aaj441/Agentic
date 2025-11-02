@@ -1,0 +1,36 @@
+{
+  "name": "wcag-pipeline",
+  "version": "1.0.0",
+  "description": "AGENTIC-BROWSER WCAG Pipeline - Automated accessibility compliance scanning and CEO outreach",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "start": "python -m http.server $PORT || 8000",
+    "build": "echo 'Static site - no build required'",
+    "test": "echo 'No tests specified' && exit 0"
+  },
+  "keywords": [
+    "wcag",
+    "accessibility",
+    "compliance",
+    "ada",
+    "scanner",
+    "ceo-outreach",
+    "saas",
+    "full-stack"
+  ],
+  "author": "AGENTIC-BROWSER",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/wcag-pipeline.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
